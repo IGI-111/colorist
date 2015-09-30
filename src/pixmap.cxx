@@ -7,14 +7,10 @@
 int readValue(std::ifstream &stream)
 {
     std::string buf;
-    while(true){
+    stream >> buf;
+    while(buf[0] == '#'){
+        stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore rest of line
         stream >> buf;
-        if(buf[0] == '#'){
-            stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore rest of line
-            buf.clear();
-            continue;
-        }
-        break;
     }
     return std::stoi(buf);
 }
