@@ -7,6 +7,9 @@ TARGET   = colorist
 CC       = g++
 CFLAGS   = -Wall -g -std=c++14
 
+# Catch unit testing
+CATCHFLAGS = -r compact
+
 # Project directories
 SRCDIR   = src
 OBJDIR   = obj
@@ -35,7 +38,7 @@ $(sort $(TEST_OBJECTS) $(OBJECTS)): $(OBJDIR)/%.o : $(SRCDIR)/%.cxx
 
 .PHONEY: test
 test: $(BINDIR)/test
-	@./$(BINDIR)/test
+	@./$(BINDIR)/test $(CATCHFLAGS)
 
 $(BINDIR)/test : $(TEST_OBJECTS)
 	@$(CC) -o $@ $(CFLAGS) $(TEST_OBJECTS)
@@ -44,4 +47,3 @@ $(BINDIR)/test : $(TEST_OBJECTS)
 clean:
 	@$(rm) $(OBJECTS) $(BINDIR)/$(TARGET) $(BINDIR)/test
 	@echo "Cleanup complete!"
-
