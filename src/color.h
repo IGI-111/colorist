@@ -5,9 +5,9 @@
 
 class Color{
     public:
-        int r, g, b;
+        unsigned char r, g, b;
         Color() : r(0), g(0), b(0) {}
-        Color(int r, int g, int b) : r(r), g(g), b(b) {}
+        Color(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b) {}
         bool operator==(const Color &c)
         {
             return c.r == r && c.g == g && c.b == b;

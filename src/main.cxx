@@ -4,7 +4,7 @@
 int main(int argc, char *argv[])
 {
     try{
-        if(argc != 2){
+        if(argc != 3){
             std::cerr << "Usage: colourist input.pbm output.ppm"<< std::endl;
             return 1;
         }
@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
                     std::cout << '?';
             std::cout << std::endl;
         }
+        writeColored(matrix, argv[2]);
 
     }
     catch(std::exception &e){
