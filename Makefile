@@ -7,36 +7,41 @@ TARGET   = colorist
 CC       = g++
 CFLAGS   = -Wall -g -std=c++14
 
-# Linker and flags
-LINKER   = g++ -o
-LFLAGS   = -Wall -g -std=c++14
-
 # Project directories
 SRCDIR   = src
 OBJDIR   = obj
 BINDIR   = bin
+TESTDIR  = src/test
 
 ##################################################
 
-SOURCES  := $(wildcard $(SRCDIR)/*.cxx)
-INCLUDES := $(wildcard $(SRCDIR)/*.h)
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.cxx=$(OBJDIR)/%.o)
 rm       = rm -f
 
-$(BINDIR)/$(TARGET): $(OBJECTS)
-	$(LINKER) $@ $(LFLAGS) $(OBJECTS) $(LIBS)
-	echo "Linking complete!"
+SOURCES  := $(wildcard $(SRCDIR)/*.cxx)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.cxx=$(OBJDIR)/%.o)
 
-$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cxx
-	$(CC) $(CFLAGS) -c $< -o $@ #$(LIBS)
-	echo "Compiled "$<" successfully!"
+TEST_SOURCES  := $(wildcard $(TESTDIR)/*.cxx) $(filter-out $(SRCDIR)/main.cxx,$(SOURCES))
+TEST_OBJECTS  := $(TEST_SOURCES:$(SRCDIR)/%.cxx=$(OBJDIR)/%.o)
+
+all: $(BINDIR)/$(TARGET) test
+
+$(BINDIR)/$(TARGET): $(OBJECTS)
+	@$(CC) -o $@ $(CFLAGS) $(OBJECTS)
+	@echo "Linking complete!"
+
+$(sort $(TEST_OBJECTS) $(OBJECTS)): $(OBJDIR)/%.o : $(SRCDIR)/%.cxx
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
+
+.PHONEY: test
+test: $(BINDIR)/test
+	@./$(BINDIR)/test
+
+$(BINDIR)/test : $(TEST_OBJECTS)
+	@$(CC) -o $@ $(CFLAGS) $(TEST_OBJECTS)
 
 .PHONEY: clean
-clean: remove
-	$(rm) $(OBJECTS)
-	echo "Cleanup complete!"
+clean:
+	@$(rm) $(OBJECTS) $(BINDIR)/$(TARGET) $(BINDIR)/test
+	@echo "Cleanup complete!"
 
-.PHONEY: remove
-remove:
-	$(rm) $(BINDIR)/$(TARGET)
-	echo "Executable removed!"
