@@ -1,8 +1,8 @@
-#include "pixmap.h"
 #include <fstream>
 #include <limits>
 #include <vector>
 #include <iostream>
+#include "pixmap.h"
 
 int readValue(std::ifstream &stream)
 {

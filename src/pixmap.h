@@ -1,8 +1,8 @@
 #ifndef PIXMAP_H_SPXEH8AS
 #define PIXMAP_H_SPXEH8AS
 
-#include "common.h"
 #include <string>
+#include "color.h"
 
 // PBM format (monochrome)
 ColorMatrix readMonochrome(const std::string &filename);
