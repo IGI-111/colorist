@@ -18,16 +18,16 @@ TEST_CASE("reading PBM file")
     {
         auto feep = readMonochrome("sample/feep.pbm");
 
-        const Color b(0,0,0);
-        const Color w(255,255,255);
+        auto o = Color::black;
+        auto _ = Color::white;
         const ColorMatrix reference = {
-            {w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w},
-            {w,b,b,b,b,w,w,b,b,b,b,w,w,b,b,b,b,w,w,b,b,b,b,w},
-            {w,b,w,w,w,w,w,b,w,w,w,w,w,b,w,w,w,w,w,b,w,w,b,w},
-            {w,b,b,b,w,w,w,b,b,b,w,w,w,b,b,b,w,w,w,b,b,b,b,w},
-            {w,b,w,w,w,w,w,b,w,w,w,w,w,b,w,w,w,w,w,b,w,w,w,w},
-            {w,b,w,w,w,w,w,b,b,b,b,w,w,b,b,b,b,w,w,b,w,w,w,w},
-            {w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w},
+            {_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_},
+            {_,o,o,o,o,_,_,o,o,o,o,_,_,o,o,o,o,_,_,o,o,o,o,_},
+            {_,o,_,_,_,_,_,o,_,_,_,_,_,o,_,_,_,_,_,o,_,_,o,_},
+            {_,o,o,o,_,_,_,o,o,o,_,_,_,o,o,o,_,_,_,o,o,o,o,_},
+            {_,o,_,_,_,_,_,o,_,_,_,_,_,o,_,_,_,_,_,o,_,_,_,_},
+            {_,o,_,_,_,_,_,o,o,o,o,_,_,o,o,o,o,_,_,o,_,_,_,_},
+            {_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_},
         };
         REQUIRE(feep == reference);
     }

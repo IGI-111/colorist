@@ -14,6 +14,9 @@ class Color{
         {
             return c.r == r && c.g == g && c.b == b;
         }
+        static const Color
+            white,
+            black;
 };
 
 typedef std::vector<Color> ColorVector;

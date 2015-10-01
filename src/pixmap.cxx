@@ -87,3 +87,15 @@ void writeColored(const ColorMatrix &bitmap, const std::string &filename)
         file << std::endl;
     }
 }
+
+ColorMatrix randomMonochrome(const unsigned width, const unsigned height)
+{
+    ColorMatrix bitmap;
+    for(unsigned j = 0; j < height; ++j){
+        ColorVector row;
+        for(unsigned i = 0; i < width; ++i)
+            row.push_back(rand() % 2 ? Color::black : Color::white);
+        bitmap.push_back(row);
+    }
+    return bitmap;
+}
