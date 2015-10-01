@@ -9,7 +9,8 @@ unsigned readValue(std::ifstream &stream)
     std::string buf;
     stream >> buf;
     while(buf[0] == '#'){
-        stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore rest of line
+        // ignore rest of line since it's a comment
+        stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         stream >> buf;
     }
     return std::stoul(buf);
@@ -37,7 +38,8 @@ ColorMatrix readMonochrome(const std::string &filename)
     std::string buf;
     file >> buf;
     if(buf != "P1")
-        throw std::runtime_error("Trying to read PBM file with wrong magic identifier: " + buf);
+        throw std::runtime_error(
+                "Trying to read PBM file with wrong magic identifier: " + buf);
 
     auto width = readValue(file);
     auto height = readValue(file);

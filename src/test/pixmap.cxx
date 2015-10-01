@@ -9,19 +9,27 @@ TEST_CASE("reading PBM file")
 {
     SECTION("read another type of file")
     {
-        bool caught = false;
-        try{
-            readMonochrome("sample/feep.ppm");
-        }
-        catch(std::runtime_error &e){
-            caught = true;
-            auto message = e.what();
-            REQUIRE(std::string("Trying to read PBM file with wrong magic identifier: P3") == message);
-        }
-        REQUIRE(caught);
+        REQUIRE_THROWS_AS(
+                readMonochrome("sample/feep.ppm"),
+                std::runtime_error);
     }
-    SECTION("read various valid files")
+
+    SECTION("read valid file")
     {
-        //TODO
+        auto feep = readMonochrome("sample/feep.pbm");
+
+        const Color b(0,0,0);
+        const Color w(255,255,255);
+        const ColorMatrix reference = {
+            {w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w},
+            {w,b,b,b,b,w,w,b,b,b,b,w,w,b,b,b,b,w,w,b,b,b,b,w},
+            {w,b,w,w,w,w,w,b,w,w,w,w,w,b,w,w,w,w,w,b,w,w,b,w},
+            {w,b,b,b,w,w,w,b,b,b,w,w,w,b,b,b,w,w,w,b,b,b,b,w},
+            {w,b,w,w,w,w,w,b,w,w,w,w,w,b,w,w,w,w,w,b,w,w,w,w},
+            {w,b,w,w,w,w,w,b,b,b,b,w,w,b,b,b,b,w,w,b,w,w,w,w},
+            {w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w},
+        };
+        REQUIRE(feep == reference);
     }
+
 }
