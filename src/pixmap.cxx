@@ -2,6 +2,7 @@
 #include <limits>
 #include <vector>
 #include <iostream>
+#include <stdexcept>
 #include "pixmap.h"
 
 unsigned readValue(std::ifstream &stream)
