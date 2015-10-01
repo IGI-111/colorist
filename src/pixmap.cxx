@@ -12,7 +12,7 @@ unsigned readValue(std::ifstream &stream)
         stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore rest of line
         stream >> buf;
     }
-    return std::stoi(buf);
+    return std::stoul(buf);
 }
 
 unsigned maxDepth(const ColorMatrix &matrix)
