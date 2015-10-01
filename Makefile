@@ -45,5 +45,5 @@ $(BINDIR)/test : $(TEST_OBJECTS)
 
 .PHONEY: clean
 clean:
-	@$(rm) $(OBJECTS) $(BINDIR)/$(TARGET) $(BINDIR)/test
+	@$(rm) $(wildcard $(OBJDIR)/*.o $(OBJDIR)/test/*.o) $(BINDIR)/$(TARGET) $(BINDIR)/test
 	@echo "Cleanup complete!"

@@ -4,7 +4,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.h"
 
-
 TEST_CASE("reading PBM file")
 {
     SECTION("read another type of file")
