@@ -29,11 +29,11 @@ void Disjoint<T>::unite(
         // redirect head pointers for second
         for(Node *i = second->head.get();i != nullptr;i = i->next.get())
             i->head = first->head.get();
-        // move toUnite list at the end of this list
+        // move second at the end of first
         first->tail->next = std::move(second->head);
         // change tail pointer
         first->tail = second->tail;
-        // redirect toUnite pointer to this list
+        // redirect second pointer to first
         second = first;
     }
 }
