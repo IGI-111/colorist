@@ -5,31 +5,33 @@
 #include <stdexcept>
 #include "pixmap.h"
 
-unsigned readValue(std::ifstream &stream)
-{
-    std::string buf;
-    stream >> buf;
-    while(buf[0] == '#'){
-        // ignore rest of line since it's a comment
-        stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+namespace {
+    unsigned readValue(std::ifstream &stream)
+    {
+        std::string buf;
         stream >> buf;
-    }
-    return std::stoul(buf);
-}
-
-unsigned maxDepth(const ColorMatrix &matrix)
-{
-    unsigned max = 0;
-    for(auto line : matrix)
-        for(auto col : line){
-            if(col.r > max)
-                max = col.r;
-            if(col.g > max)
-                max = col.g;
-            if(col.b > max)
-                max = col.b;
+        while(buf[0] == '#'){
+            // ignore rest of line since it's a comment
+            stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            stream >> buf;
         }
-    return max;
+        return std::stoul(buf);
+    }
+
+    unsigned maxDepth(const ColorMatrix &matrix)
+    {
+        unsigned max = 0;
+        for(auto line : matrix)
+            for(auto col : line){
+                if(col.r > max)
+                    max = col.r;
+                if(col.g > max)
+                    max = col.g;
+                if(col.b > max)
+                    max = col.b;
+            }
+        return max;
+    }
 }
 
 ColorMatrix readMonochrome(const std::string &filename)
