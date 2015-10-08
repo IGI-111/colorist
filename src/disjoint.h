@@ -2,6 +2,7 @@
 #define DISJOINT_H_ONOUD6RJ
 
 #include <memory>
+#include <vector>
 
 template <class T>
 class Disjoint{
@@ -23,6 +24,12 @@ class Disjoint{
         std::unique_ptr<Node> head;
         Node *tail;
 };
+
+template <class T>
+using DisjointVector = std::vector<Disjoint<T>>;
+
+template <class T>
+using DisjointMatrix = std::vector<DisjointVector<T>>;
 
 #include "disjoint.hxx"
 
