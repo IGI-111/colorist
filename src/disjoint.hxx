@@ -21,11 +21,20 @@ const T& Disjoint<T>::find() const
 }
 
 template <class T>
+std::size_t Disjoint<T>::size() const
+{
+    std::size_t count(0);
+    for(Node *i = head.get();i != nullptr;i = i->next.get())
+        ++count;
+    return count;
+}
+
+template <class T>
 void Disjoint<T>::unite(
         const std::shared_ptr<Disjoint<T>> &first,
         std::shared_ptr<Disjoint<T>> &second)
 {
-    if(second->find() == first->find()){
+    if(second->find() == first->find() && first != second){
         // redirect head pointers for second
         for(Node *i = second->head.get();i != nullptr;i = i->next.get())
             i->head = first->head.get();

@@ -93,6 +93,7 @@ void writeColored(const ColorMatrix &bitmap, const std::string &filename)
 
 ColorMatrix randomMonochrome(const unsigned width, const unsigned height)
 {
+    //TODO: replace with c++14 RNG
     ColorMatrix bitmap;
     for(unsigned j = 0; j < height; ++j){
         ColorVector row;
