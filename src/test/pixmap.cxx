@@ -4,6 +4,8 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.h"
 
+#include <iostream>
+
 TEST_CASE("read invalid file", "[pbm]")
 {
     SECTION("read another type of file")
@@ -11,6 +13,27 @@ TEST_CASE("read invalid file", "[pbm]")
         REQUIRE_THROWS_AS(
                 readMonochrome("sample/feep.ppm"),
                 std::runtime_error);
+    }
+    SECTION("read a file missing some values")
+    {
+        REQUIRE_THROWS(
+                readMonochrome("sample/brokenFeep.pbm"));
+    }
+    SECTION("read a file with invalid color descriptors")
+    {
+        REQUIRE_THROWS_AS(
+                readMonochrome("sample/moreBrokenFeep.pbm"),
+                std::runtime_error);
+    }
+    SECTION("read random garbage")
+    {
+        REQUIRE_THROWS(
+                readMonochrome("sample/randomGarbage"));
+    }
+    SECTION("readf file with negative header values")
+    {
+        REQUIRE_THROWS(
+                readMonochrome("sample/reallyBrokenFeep.pbm"));
     }
 }
 
@@ -31,6 +54,16 @@ TEST_CASE("reading PBM file", "[pbm]")
             {_,o,_,_,_,_,_,o,o,o,o,_,_,o,o,o,o,_,_,o,_,_,_,_},
             {_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_},
         };
+
+        std::stringstream feepValue;
+        for(auto line : feep){
+            for(auto val : line){
+                feepValue << (val == Color::black ? 'o' : ' ');
+            }
+            feepValue << std::endl;
+        }
+
+        INFO("feep:\n" << feepValue.str());
         REQUIRE(feep == reference);
     }
 
