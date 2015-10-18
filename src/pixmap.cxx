@@ -2,6 +2,7 @@
 #include <limits>
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include "pixmap.h"
 
@@ -83,16 +84,26 @@ void writeColored(const ColorMatrix &bitmap, const std::string &filename)
         << depth << std::endl;
 
     for(auto line : bitmap){
-        for(auto val : line)
-            file << static_cast<unsigned>(val.r) << ' '
+        unsigned lineLength = 0;
+        for(auto val : line){
+            std::stringstream valToAdd;
+            valToAdd << static_cast<unsigned>(val.r) << ' '
                 << static_cast<unsigned>(val.g) << ' '
                 << static_cast<unsigned>(val.b) << ' ';
+            lineLength += valToAdd.str().size();
+            if(lineLength > 70){
+                file << std::endl;
+                lineLength = valToAdd.str().size();
+            }
+            file << valToAdd.str();
+        }
         file << std::endl;
     }
 }
 
 ColorMatrix randomMonochrome(const unsigned width, const unsigned height)
 {
+    //TODO: replace with c++14 RNG
     ColorMatrix bitmap;
     for(unsigned j = 0; j < height; ++j){
         ColorVector row;

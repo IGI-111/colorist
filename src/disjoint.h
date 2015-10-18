@@ -9,6 +9,8 @@ class Disjoint{
     public:
         Disjoint(const T &content);
         const T& find() const;
+        std::size_t size() const;
+
         static void unite(
                 const std::shared_ptr<Disjoint<T>> &first,
                 std::shared_ptr<Disjoint<T>> &second);

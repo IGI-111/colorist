@@ -4,7 +4,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.h"
 
-TEST_CASE("reading PBM file")
+TEST_CASE("read invalid file", "[pbm]")
 {
     SECTION("read another type of file")
     {
@@ -12,7 +12,10 @@ TEST_CASE("reading PBM file")
                 readMonochrome("sample/feep.ppm"),
                 std::runtime_error);
     }
+}
 
+TEST_CASE("reading PBM file", "[pbm]")
+{
     SECTION("read valid file")
     {
         auto feep = readMonochrome("sample/feep.pbm");
@@ -32,3 +35,5 @@ TEST_CASE("reading PBM file")
     }
 
 }
+
+//TODO: write ppm tests
