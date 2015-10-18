@@ -51,7 +51,7 @@ ColorMatrix readMonochrome(const std::string &filename)
 
     ColorMatrix lines;
     for (unsigned i = 0; i < height; ++i) {
-        ColorVector line;
+        std::vector<Color> line;
         for (unsigned i = 0; i < width; ++i){
             auto val = readValue(file);
             if(val == 1)
@@ -120,7 +120,7 @@ ColorMatrix randomMonochrome(const unsigned width, const unsigned height)
 
     ColorMatrix bitmap;
     for(unsigned j = 0; j < height; ++j){
-        ColorVector row;
+        std::vector<Color> row;
         for(unsigned i = 0; i < width; ++i)
             row.push_back(dis(eng) ? Color::black : Color::white);
         bitmap.push_back(row);

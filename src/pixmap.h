@@ -3,6 +3,7 @@
 
 #include <string>
 #include "color.h"
+#include "matrix.h"
 
 // PBM format (monochrome)
 ColorMatrix readMonochrome(const std::string &filename);

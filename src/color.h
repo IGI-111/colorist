@@ -2,6 +2,7 @@
 #define COMMON_H_X2AOOYW9
 
 #include <vector>
+#include "matrix.h"
 
 class Color{
     public:
@@ -19,7 +20,6 @@ class Color{
             black;
 };
 
-typedef std::vector<Color> ColorVector;
-typedef std::vector<ColorVector> ColorMatrix;
+typedef Matrix<Color> ColorMatrix;
 
 #endif /* end of include guard: COMMON_H_X2AOOYW9 */

@@ -1,25 +1,28 @@
 #ifndef DISJOINT_H_ONOUD6RJ
 #define DISJOINT_H_ONOUD6RJ
 
+#include "color.h"
+#include "matrix.h"
 #include <memory>
 #include <vector>
 
-template <class T>
 class Disjoint{
     public:
-        Disjoint(const T &content);
-        const T& find() const;
+        Disjoint(std::size_t x, std::size_t y) : Disjoint(Coord(x,y)) {}
+        Disjoint(const Coord &content);
+        const Coord &find() const;
         std::size_t size() const;
 
         static void unite(
-                const std::shared_ptr<Disjoint<T>> &first,
-                std::shared_ptr<Disjoint<T>> &second);
+                const std::shared_ptr<Disjoint> &first,
+                std::shared_ptr<Disjoint> &second,
+                ColorMatrix &bitmap);
     private:
         struct Node{
-            Node(const T &content) :
+            Node(const Coord &content) :
                 content(content) {}
             Node *head;
-            T content;
+            Coord content;
             std::unique_ptr<Node> next;
         };
 
@@ -27,12 +30,6 @@ class Disjoint{
         Node *tail;
 };
 
-template <class T>
-using DisjointVector = std::vector<Disjoint<T>>;
-
-template <class T>
-using DisjointMatrix = std::vector<DisjointVector<T>>;
-
-#include "disjoint.hxx"
+typedef Matrix<std::shared_ptr<Disjoint>> DisjointMatrix;
 
 #endif /* end of include guard: DISJOINT_H_ONOUD6RJ */
