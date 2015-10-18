@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <random>
 #include "pixmap.h"
 
 namespace {
@@ -112,12 +113,16 @@ void writeColored(const ColorMatrix &bitmap, const std::string &filename)
 
 ColorMatrix randomMonochrome(const unsigned width, const unsigned height)
 {
-    //TODO: replace with c++14 RNG
+
+    static std::random_device rd;
+    static std::default_random_engine eng(rd());
+    static std::uniform_int_distribution<unsigned> dis(0, 1);
+
     ColorMatrix bitmap;
     for(unsigned j = 0; j < height; ++j){
         ColorVector row;
         for(unsigned i = 0; i < width; ++i)
-            row.push_back(rand() % 2 ? Color::black : Color::white);
+            row.push_back(dis(eng) ? Color::black : Color::white);
         bitmap.push_back(row);
     }
     return bitmap;

@@ -69,4 +69,20 @@ TEST_CASE("reading PBM file", "[pbm]")
 
 }
 
-//TODO: write ppm tests
+TEST_CASE("writing invalid matrix to PPM file", "[ppm]")
+{
+    SECTION("empty ColorMatrix")
+    {
+        ColorMatrix empty = {};
+        REQUIRE_THROWS_AS(
+                writeColored(empty, "bin/out.ppm"),
+                std::logic_error);
+    }
+    SECTION("nonrectangular ColorMatrix")
+    {
+        ColorMatrix totallyARectangleISwear = {{},{Color::black}};
+        REQUIRE_THROWS_AS(
+                writeColored(totallyARectangleISwear, "bin/out.ppm"),
+                std::logic_error);
+    }
+}
