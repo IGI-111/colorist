@@ -28,14 +28,6 @@ void unite(const Coord &c1, const Coord &c2, ColorMatrix &bitmap, std::list<Disj
     auto set2 = std::find_if(sets.begin(), sets.end(),
             [repr2](auto dis){ return dis.repr() == repr2; });
 
-    for(auto set : sets){
-        std::cout << set.size() << ' ';
-        for(auto ptr: set)
-            std::cout << ptr << ' ';
-        std::cout << std::endl;
-    }
-        std::cout << std::endl;
-
     Disjoint::unite(set1, set2, sets, bitmap);
 
 
@@ -47,32 +39,34 @@ void unionize(ColorMatrix &bitmap, std::list<Disjoint> &sets, const std::map<Coo
             auto here = val.first;
             auto x = here.first;
             auto y = here.second;
-            auto onRight = Coord(x+1,y);
-            //auto onLeft = Coord(x-1,y);
-            auto onBottom = Coord(x,y+1);
-            //auto onTop = Coord(x,y-1);
 
+            auto onRight = Coord(x+1,y);
             if(nodes.count(onRight) > 0)
                 unite(here, onRight, bitmap, sets, nodes);
-            //if(sets.count(onLeft) > 0)
-            //unite(here, onLeft, bitmap, sets);
+
+            auto onBottom = Coord(x,y+1);
             if(nodes.count(onBottom) > 0)
                 unite(here, onBottom, bitmap, sets, nodes);
-            //if(sets.count(onTop) > 0)
-            //unite(here, onTop, bitmap, sets);
         }
 }
 
 int main(int argc, char *argv[])
 {
     try{
-        if(argc != 3){
-            std::cerr << "Usage: colourist input.pbm output.ppm"<< std::endl;
+        if(argc < 3 || argc > 4){
+            std::cerr << "Usage:" << std::endl
+                << "\tcolourist input.pbm output.ppm"<< std::endl
+                << "\tcolourist width height output.ppm"<< std::endl;
             return 1;
         }
 
-        auto bitmap = readMonochrome(argv[1]);
-        //auto bitmap = randomMonochrome(7,7);
+        ColorMatrix bitmap;
+        if(argc == 3)
+            bitmap = readMonochrome(argv[1]);
+        else
+            bitmap = randomMonochrome(
+                    std::stoul(argv[1]),
+                    std::stoul(argv[2]));
 
         // construct disjoint sets matrix
         std::map<Coord, Node> nodes;
@@ -91,7 +85,7 @@ int main(int argc, char *argv[])
         // unions
         unionize(bitmap, sets, nodes);
 
-        writeColored(bitmap, argv[2]);
+        writeColored(bitmap, argv[argc-1]);
     }
     catch(std::exception &e){
         std::cerr << e.what() << std::endl;

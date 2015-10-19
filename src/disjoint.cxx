@@ -24,10 +24,10 @@ void Disjoint::unite(
         std::list<Disjoint> sets,
         ColorMatrix &bitmap)
 {
+    // union on yourself will only bring trouble
     if(first->repr() == second->repr())
         return;
 
-    std::cout << first->repr() << ' ' << second->repr() << std::endl;
     // redirect head pointers for second
     // and change colors accordingly
     auto reprCoord = first->repr()->content;
