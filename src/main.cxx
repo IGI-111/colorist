@@ -18,7 +18,12 @@ void colorize(ColorMatrix &bitmap)
                 bitmap.at(x,y) = Color(dis(eng), dis(eng), dis(eng));
 }
 
-void unite(const Coord &c1, const Coord &c2, ColorMatrix &bitmap, std::list<Disjoint> &sets, const std::map<Coord, Node> &nodes)
+void unite(
+        const Coord &c1,
+        const Coord &c2,
+        ColorMatrix &bitmap,
+        std::list<Disjoint> &sets, const
+        std::map<Coord, Node> &nodes)
 {
     auto repr1 = nodes.at(c1).head;
     auto set1 = std::find_if(sets.begin(), sets.end(),
@@ -29,25 +34,26 @@ void unite(const Coord &c1, const Coord &c2, ColorMatrix &bitmap, std::list<Disj
             [repr2](auto dis){ return dis.repr() == repr2; });
 
     Disjoint::unite(set1, set2, sets, bitmap);
-
-
 }
 
-void unionize(ColorMatrix &bitmap, std::list<Disjoint> &sets, const std::map<Coord, Node> &nodes)
+void unionize(
+        ColorMatrix &bitmap,
+        std::list<Disjoint> &sets,
+        const std::map<Coord, Node> &nodes)
 {
     for(auto val : nodes){
-            auto here = val.first;
-            auto x = here.first;
-            auto y = here.second;
+        auto here = val.first;
+        auto x = here.first;
+        auto y = here.second;
 
-            auto onRight = Coord(x+1,y);
-            if(nodes.count(onRight) > 0)
-                unite(here, onRight, bitmap, sets, nodes);
+        auto onRight = Coord(x+1,y);
+        if(nodes.count(onRight) > 0)
+            unite(here, onRight, bitmap, sets, nodes);
 
-            auto onBottom = Coord(x,y+1);
-            if(nodes.count(onBottom) > 0)
-                unite(here, onBottom, bitmap, sets, nodes);
-        }
+        auto onBottom = Coord(x,y+1);
+        if(nodes.count(onBottom) > 0)
+            unite(here, onBottom, bitmap, sets, nodes);
+    }
 }
 
 int main(int argc, char *argv[])
