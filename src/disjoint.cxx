@@ -1,47 +1,46 @@
 #include "disjoint.h"
 #include <memory>
+#include <iostream>
 
-Disjoint::Disjoint(const Coord &content)
+Disjoint::Disjoint(Node *singleton)
 {
-    auto singleton = std::make_unique<Node>(content);
-    singleton->head = singleton.get();
-    singleton->next = nullptr;
-
-    head = std::move(singleton);
-    tail = head.get();
+    push_back(singleton);
+    front()->head = front();
 }
 
-const Coord &Disjoint::find() const
+Node *Disjoint::repr()
 {
-    return head->content;
+    return front();
 }
 
 std::size_t Disjoint::size() const
 {
-    std::size_t count(0);
-    for(Node *i = head.get();i != nullptr;i = i->next.get())
-        ++count;
-    return count;
+    return std::list<Node*>::size();
 }
 
 void Disjoint::unite(
-        const std::shared_ptr<Disjoint> &first,
-        std::shared_ptr<Disjoint> &second,
+        std::list<Disjoint>::iterator first,
+        std::list<Disjoint>::iterator second,
+        std::list<Disjoint> sets,
         ColorMatrix &bitmap)
 {
+    if(first->repr() == second->repr())
+        return;
+
+    std::cout << first->repr() << ' ' << second->repr() << std::endl;
     // redirect head pointers for second
     // and change colors accordingly
-    auto reprCoord = first->head->content;
+    auto reprCoord = first->repr()->content;
     auto newColor = bitmap.at(reprCoord);
-    for(Node *i = second->head.get();i != nullptr;i = i->next.get()){
-        i->head = first->head.get();
-        auto pixelCoord = i->content;
+    for(auto node : *second){
+        node->head = first->front();
+        auto pixelCoord = node->content;
         bitmap.at(pixelCoord) = newColor;
     }
-    // move second at the end of first
-    first->tail->next = std::move(second->head);
-    // change tail pointer
-    first->tail = second->tail;
-    // redirect second pointer to first
-    second = first;
+
+    // move all elements from second at the end of first
+    first->splice(first->end(), *second);
+
+    // remove second list
+    sets.erase(second);
 }

@@ -15,6 +15,7 @@ class Color{
         {
             return c.r == r && c.g == g && c.b == b;
         }
+        bool operator!=(const Color &c) const { return !(c == *this); }
         static const Color
             white,
             black;

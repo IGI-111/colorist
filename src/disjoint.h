@@ -5,29 +5,28 @@
 #include "matrix.h"
 #include <memory>
 #include <vector>
+#include <list>
 
-class Disjoint{
+struct Node{
+    Node() {}
+    Node(const Coord &content) :
+        content(content) {}
+    Node *head;
+    Coord content;
+};
+
+class Disjoint : public std::list<Node*>{
     public:
-        Disjoint(std::size_t x, std::size_t y) : Disjoint(Coord(x,y)) {}
-        Disjoint(const Coord &content);
-        const Coord &find() const;
+        Disjoint(Node *singleton);
+        Disjoint() : std::list<Node*>() {}
+        Node *repr();
         std::size_t size() const;
 
         static void unite(
-                const std::shared_ptr<Disjoint> &first,
-                std::shared_ptr<Disjoint> &second,
+                std::list<Disjoint>::iterator first,
+                std::list<Disjoint>::iterator second,
+                std::list<Disjoint> sets,
                 ColorMatrix &bitmap);
-    private:
-        struct Node{
-            Node(const Coord &content) :
-                content(content) {}
-            Node *head;
-            Coord content;
-            std::unique_ptr<Node> next;
-        };
-
-        std::unique_ptr<Node> head;
-        Node *tail;
 };
 
 typedef Matrix<std::shared_ptr<Disjoint>> DisjointMatrix;
