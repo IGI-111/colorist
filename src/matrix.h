@@ -9,6 +9,8 @@ class Matrix : public std::vector<std::vector<T>>{
         using std::vector<std::vector<T>>::vector;
         T &at(std::size_t x, std::size_t y) { return (*this)[y][x]; }
         T &at(const Coord &c) { return at(c.first, c.second); }
+        const T &at(std::size_t x, std::size_t y) const { return (*this)[y][x]; }
+        const T &at(const Coord &c) const { return at(c.first, c.second); }
 };
 
 

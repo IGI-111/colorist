@@ -7,12 +7,14 @@
 #include <vector>
 #include <list>
 
+class Disjoint;
+
 struct Node{
     Node() {}
-    Node(const Coord &content) :
+    Node(const Color &content) :
         content(content) {}
-    Node *head;
-    Coord content;
+    Disjoint *parent;
+    Color content;
 };
 
 class Disjoint : public std::list<Node*>{
@@ -23,10 +25,8 @@ class Disjoint : public std::list<Node*>{
         std::size_t size() const;
 
         static void unite(
-                std::list<Disjoint>::iterator first,
-                std::list<Disjoint>::iterator second,
-                std::list<Disjoint> sets,
-                ColorMatrix &bitmap);
+                Disjoint *first,
+                Disjoint *second);
 };
 
 typedef Matrix<std::shared_ptr<Disjoint>> DisjointMatrix;

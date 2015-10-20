@@ -5,7 +5,7 @@
 Disjoint::Disjoint(Node *singleton)
 {
     push_back(singleton);
-    front()->head = front();
+    front()->parent = this;
 }
 
 Node *Disjoint::repr()
@@ -15,14 +15,12 @@ Node *Disjoint::repr()
 
 std::size_t Disjoint::size() const
 {
-    return std::list<Node*>::size();
+    return std::list<Node*>::size(); // should be O(1) since c++11
 }
 
 void Disjoint::unite(
-        std::list<Disjoint>::iterator first,
-        std::list<Disjoint>::iterator second,
-        std::list<Disjoint> sets,
-        ColorMatrix &bitmap)
+        Disjoint *first,
+        Disjoint *second)
 {
     // union on yourself will only bring trouble
     if(first->repr() == second->repr())
@@ -30,17 +28,12 @@ void Disjoint::unite(
 
     // redirect head pointers for second
     // and change colors accordingly
-    auto reprCoord = first->repr()->content;
-    auto newColor = bitmap.at(reprCoord);
+    auto newColor = first->repr()->content;
     for(auto node : *second){
-        node->head = first->front();
-        auto pixelCoord = node->content;
-        bitmap.at(pixelCoord) = newColor;
+        node->parent = first;
+        node->content = newColor;
     }
 
     // move all elements from second at the end of first
     first->splice(first->end(), *second);
-
-    // remove second list
-    sets.erase(second);
 }

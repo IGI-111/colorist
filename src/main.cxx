@@ -6,54 +6,53 @@
 #include "disjoint.h"
 
 
-void colorize(ColorMatrix &bitmap)
+void colorize(Matrix<Node> &nodes)
 {
     static std::random_device rd;
     static std::mt19937 eng(rd());
     static std::uniform_int_distribution<unsigned char> dis(0, 255);
 
-    for (std::size_t y = 0; y < bitmap.size(); ++y)
-        for (std::size_t x = 0; x < bitmap[y].size(); ++x)
-            if(bitmap.at(x,y) != Color::black)
-                bitmap.at(x,y) = Color(dis(eng), dis(eng), dis(eng));
+    for (std::size_t y = 0; y < nodes.size(); ++y)
+        for (std::size_t x = 0; x < nodes[y].size(); ++x)
+            if(nodes.at(x,y).content != Color::black)
+                nodes.at(x,y).content = Color(dis(eng), dis(eng), dis(eng));
 }
 
 void unite(
         const Coord &c1,
         const Coord &c2,
-        ColorMatrix &bitmap,
-        std::list<Disjoint> &sets, const
-        std::map<Coord, Node> &nodes)
+        const Matrix<Node> &nodes)
 {
-    auto repr1 = nodes.at(c1).head;
-    auto set1 = std::find_if(sets.begin(), sets.end(),
-            [repr1](auto dis){ return dis.repr() == repr1; });
+    auto set1 = nodes.at(c1).parent;
+    auto set2 = nodes.at(c2).parent;
 
-    auto repr2 = nodes.at(c2).head;
-    auto set2 = std::find_if(sets.begin(), sets.end(),
-            [repr2](auto dis){ return dis.repr() == repr2; });
-
-    Disjoint::unite(set1, set2, sets, bitmap);
+    // let's do less operations if we can
+    //if(set1->size() < set2->size())
+        //Disjoint::unite(set1, set2);
+    //else
+        Disjoint::unite(set2, set1);
 }
 
-void unionize(
-        ColorMatrix &bitmap,
-        std::list<Disjoint> &sets,
-        const std::map<Coord, Node> &nodes)
+void unionize(const Matrix<Node> &nodes)
 {
-    for(auto val : nodes){
-        auto here = val.first;
-        auto x = here.first;
-        auto y = here.second;
+    for (std::size_t y = 0; y < nodes.size(); ++y)
+        for (std::size_t x = 0; x < nodes[y].size(); ++x){
+            if(nodes.at(x,y).content != Color::black){
+                auto here = Coord(x,y);
 
-        auto onRight = Coord(x+1,y);
-        if(nodes.count(onRight) > 0)
-            unite(here, onRight, bitmap, sets, nodes);
+                auto onRight = Coord(x+1,y);
+                if(x+1 < nodes[y].size() &&
+                        nodes.at(onRight).content != Color::black){
+                    unite(here, onRight, nodes);
+                }
 
-        auto onBottom = Coord(x,y+1);
-        if(nodes.count(onBottom) > 0)
-            unite(here, onBottom, bitmap, sets, nodes);
-    }
+                auto onBottom = Coord(x,y+1);
+                if(y+1 < nodes.size() &&
+                        nodes.at(onBottom).content != Color::black){
+                    unite(here, onBottom, nodes);
+                }
+            }
+        }
 }
 
 int main(int argc, char *argv[])
@@ -75,21 +74,25 @@ int main(int argc, char *argv[])
                     std::stoul(argv[2]));
 
         // construct disjoint sets matrix
-        std::map<Coord, Node> nodes;
+        Matrix<Node> nodes(bitmap.size());
         for (std::size_t y = 0; y < bitmap.size(); ++y)
             for (std::size_t x = 0; x < bitmap[y].size(); ++x)
-                if(bitmap.at(x,y) != Color::black)
-                    nodes[Coord(x,y)] = Node(Coord(x,y));
+                nodes[y].emplace_back(bitmap.at(x,y));
 
         std::list<Disjoint> sets;
-        for(auto val : nodes)
-            sets.emplace_back(&nodes[val.first]);
+        for (std::size_t y = 0; y < nodes.size(); ++y)
+            for (std::size_t x = 0; x < nodes[y].size(); ++x)
+                sets.emplace_back(&nodes.at(x,y));
 
         // add random color for every white pixel
-        colorize(bitmap);
+        colorize(nodes);
 
         // unions
-        unionize(bitmap, sets, nodes);
+        unionize(nodes);
+
+        for (std::size_t y = 0; y < nodes.size(); ++y)
+            for (std::size_t x = 0; x < nodes[y].size(); ++x)
+                bitmap.at(x,y) = nodes.at(x,y).content;
 
         writeColored(bitmap, argv[argc-1]);
     }
