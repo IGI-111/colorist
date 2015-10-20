@@ -5,22 +5,88 @@
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 
-\title{\textbf{TP1} \\\ Illustration du théorème du point fixe}
-\author{Julien Basson, Vincent Bonnecuelle et Jibril Saffi}
+\title{\textbf{TP Algorithmique \& Programmation} \\ Coloriage d'images}
+\author{Vincent Bonnecuelle et Jibril Saffi}
 \date{Octobre 2015}
 
 \pagestyle{fancy}
 \fancyhead[R]{1AA}
 \fancyhead[L]{Grenoble INP \-- Ensimag}
 
-\renewcommand\thesubsection{\arabic{subsection}.}
+\renewcommand\thesubsection{\arabic{subsection}}
+
+\titleformat{\subsubsection}[runin]
+{\normalfont\large\bfseries}{Question \thesubsubsection}{1em}{}
 
 \titleformat{\subsection}[runin]
 {\normalfont\large\bfseries}{\thesubsection}{1em}{}
 
-\titleformat{\section}
-{\normalfont\large\bfseries}{Exercice \thesection}{1em}{}
+\titleformat{\section}[runin]
+{\normalfont\large\bfseries}{}{1em}{}
+
+\renewcommand{\O}{\mathcal{O}}
 
 \begin{document}
 \maketitle
+\hrule
+\section*{Réponses aux questions}
+\subsection{Lecture/écriture de données}
+\subsubsection{} 
+Nous avons identifié les cas d'erreurs suivants :
+\begin{itemize}
+\item le fichier n'est pas du bon type
+\item il manque des valeurs dans le fichier par rapport au header spécifié
+\item la forme du header n'est pas valide 
+\item n*m ne renvoie pas un entier positif ou nul.
+\end{itemize}
+Les tests pour ces erreurs sont présents dans le fichier \textit{src/test/pixmap.cxx}.
+
+\subsubsection{}
+guarantee : Les erreurs concernant la validité des éléments de la structure sont impossibles car c++ est un langage fortement et statiquement typé or les couleurs sont modélisées avec des unsigned char.  
+Nous avons identifié les cas d'erreurs suivants :
+\begin{itemize}
+\item le tableau bidimensionnel de pixels de couleur est vide
+\item le tableau bidimensionnel de pixels de couleur n'est pas rectangulaire : il faut que les lignes aient la même longueur.
+\end{itemize}
+Les tests pour ces erreurs sont présents dans le fichier \textit{src/test/pixmap.cxx}.
+
+\subsubsection{}
+L'implémentation de la fonction \textbf{randomMonochrome} se trouve dans le fichier \textit{src/pixmap.cxx}.
+
+\subsection{MakeSet() et FindSet()}
+
+\subsubsection{}
+Les tests suivants ont été réalisés pour MakeSet() et FindSet() :
+\begin{itemize}
+\item Initialisation avec une coordonnée
+\item Création d'un ensemble et verification de l'existence de cet ensemble avec FindSet()
+\end{itemize}
+
+\subsubsection{}
+Complexité de MakeSet = complexité de FindSet = $\Theta(1)$
+
+\subsection{Union()}
+\subsubsection{}
+Soit 2 ensembles disjoints $S_{x}$ et $S_{y}$ représentés par les listes chainées $L_{x}$ et $L_{y}$. Afin de réaliser l'union de ces 2 ensembles, la solution naïve consiste à joindre la tête de $L_{y}$ à la queue de $L_{x}$ et de mettre à jour le representant de $L_{y}$ afin que tout les éléments de $L_{y}$ pointent sur le représentant de $L_{x}$.
+
+TODO : faire un dessin 
+
+Si l'on considère que le pire cas correspond au cas où chaque union ferait systématiquement parcourir l'ensemble le plus grand (pour mettre à jour le représentant). Ainsi pour $n$ unions on doit faire $n(n-1)?$ opérations\footnote{avec $k? = \sum\limits_{i=1}^{k}{i}$} or:
+\[\O(n(n-1)?) =  \O(n(2(n-1))) = \O(n^2)\]
+
+Aucune variable supplémentaire n'est nécessaire, on se contente de changer la structure de la liste donc le coût en mémoire est $\O(1)$.
+\subsubsection{}
+
+la création d'un ensemble est de complexité $\O(1)$ donc $n$ créations d'ensembles aura pour compexité $\O(n)$. Suivie d'unions successives, la complexité est de :
+\[\O(n + (n-1)^2) = \O(n^2)\].
+
+\subsubsection{}
+
+
+\subsubsection{}
+\textit{Voir fichier src/disjoint.cxx}
+
+\subsubsection{}
+\[\O(n\log(n))\]
+
 \end{document}
