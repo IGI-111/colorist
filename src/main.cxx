@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <map>
+#include <set>
 #include "pixmap.h"
 #include "disjoint.h"
 
@@ -27,10 +28,10 @@ void unite(
     auto set2 = nodes.at(c2).parent;
 
     // let's do less operations if we can
-    //if(set1->size() < set2->size())
-        //Disjoint::unite(set1, set2);
-    //else
+    if(set1->size() < set2->size())
         Disjoint::unite(set2, set1);
+    else
+        Disjoint::unite(set1, set2);
 }
 
 void unionize(const Matrix<Node> &nodes)

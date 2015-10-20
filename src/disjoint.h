@@ -27,6 +27,8 @@ class Disjoint : public std::list<Node*>{
         static void unite(
                 Disjoint *first,
                 Disjoint *second);
+    private:
+        std::size_t length;
 };
 
 typedef Matrix<std::shared_ptr<Disjoint>> DisjointMatrix;

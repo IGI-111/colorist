@@ -2,7 +2,8 @@
 #include <memory>
 #include <iostream>
 
-Disjoint::Disjoint(Node *singleton)
+Disjoint::Disjoint(Node *singleton) :
+    length(1)
 {
     push_back(singleton);
     front()->parent = this;
@@ -15,7 +16,7 @@ Node *Disjoint::repr()
 
 std::size_t Disjoint::size() const
 {
-    return std::list<Node*>::size(); // should be O(1) since c++11
+    return length;
 }
 
 void Disjoint::unite(
@@ -36,4 +37,8 @@ void Disjoint::unite(
 
     // move all elements from second at the end of first
     first->splice(first->end(), *second);
+
+    // update size values
+    first->length = first->length + second->length;
+    second->length = 0;
 }

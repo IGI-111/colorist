@@ -16,6 +16,17 @@ class Color{
             return c.r == r && c.g == g && c.b == b;
         }
         bool operator!=(const Color &c) const { return !(c == *this); }
+        bool operator<(const Color &c) const
+        {
+            return
+                (static_cast<unsigned>(r) << 16) +
+                (static_cast<unsigned>(g) << 8) +
+                static_cast<unsigned>(b)
+                <
+                (static_cast<unsigned>(c.r) << 16) +
+                (static_cast<unsigned>(c.g) << 8) +
+                static_cast<unsigned>(c.b);
+        }
         static const Color
             white,
             black;
