@@ -20,7 +20,7 @@ namespace {
         return std::stoul(buf);
     }
 
-    unsigned maxDepth(const ColorMatrix &matrix)
+    unsigned maxDepth(const Matrix<Color> &matrix)
     {
         unsigned max = 0;
         for(auto line : matrix)
@@ -36,7 +36,7 @@ namespace {
     }
 }
 
-ColorMatrix readMonochrome(const std::string &filename)
+Matrix<Color> readMonochrome(const std::string &filename)
 {
     std::ifstream file(filename);
 
@@ -49,7 +49,7 @@ ColorMatrix readMonochrome(const std::string &filename)
     auto width = readValue(file);
     auto height = readValue(file);
 
-    ColorMatrix lines;
+    Matrix<Color> lines;
     for (unsigned i = 0; i < height; ++i) {
         std::vector<Color> line;
         for (unsigned i = 0; i < width; ++i){
@@ -70,7 +70,7 @@ ColorMatrix readMonochrome(const std::string &filename)
 
 
 
-void writeColored(const ColorMatrix &bitmap, const std::string &filename)
+void writeColored(const Matrix<Color> &bitmap, const std::string &filename)
 {
     auto depth = maxDepth(bitmap);
     auto height = bitmap.size();
@@ -111,14 +111,14 @@ void writeColored(const ColorMatrix &bitmap, const std::string &filename)
     }
 }
 
-ColorMatrix randomMonochrome(const unsigned width, const unsigned height)
+Matrix<Color> randomMonochrome(const unsigned width, const unsigned height)
 {
 
     static std::random_device rd;
     static std::default_random_engine eng(rd());
     static std::uniform_int_distribution<unsigned> dis(0, 1);
 
-    ColorMatrix bitmap;
+    Matrix<Color> bitmap;
     for(unsigned j = 0; j < height; ++j){
         std::vector<Color> row;
         for(unsigned i = 0; i < width; ++i)

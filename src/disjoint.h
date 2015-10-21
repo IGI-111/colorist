@@ -7,21 +7,23 @@
 #include <vector>
 #include <forward_list>
 
-class Disjoint;
+template <typename T> class Disjoint;
 
+template <typename T>
 struct Node{
     Node() {}
-    Node(Disjoint *parent, const Color &content) :
+    Node(Disjoint<T> *parent, const T &content) :
         parent(parent), content(content) {}
-    Disjoint *parent;
-    Color content;
+    Disjoint<T> *parent;
+    T content;
 };
 
-class Disjoint : private std::forward_list<Node>{
+template <typename T>
+class Disjoint : private std::forward_list<Node<T>>{
     public:
-        Disjoint(const Color &singleton);
-        Disjoint() : std::forward_list<Node>() {}
-        Node *repr();
+        Disjoint(const T &singleton);
+        Disjoint() : std::forward_list<Node<T>>() {}
+        Node<T> *repr();
         std::size_t size() const;
 
         static void unite(
@@ -31,6 +33,6 @@ class Disjoint : private std::forward_list<Node>{
         std::size_t length;
 };
 
-typedef Matrix<std::shared_ptr<Disjoint>> DisjointMatrix;
+#include "disjoint.hxx"
 
 #endif /* end of include guard: DISJOINT_H_ONOUD6RJ */

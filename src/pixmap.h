@@ -6,11 +6,11 @@
 #include "matrix.h"
 
 // PBM format (monochrome)
-ColorMatrix readMonochrome(const std::string &filename);
-ColorMatrix randomMonochrome(const unsigned width, const unsigned height);
+Matrix<Color> readMonochrome(const std::string &filename);
+Matrix<Color> randomMonochrome(const unsigned width, const unsigned height);
 
 // PPM format (full-color)
-void writeColored(const ColorMatrix &bitmap, const std::string &filename);
+void writeColored(const Matrix<Color> &bitmap, const std::string &filename);
 
 
 #endif /* end of include guard: PIXMAP_H_SPXEH8AS */

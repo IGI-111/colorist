@@ -1,50 +1,55 @@
-/*#include "../disjoint.h"
+#include "../disjoint.h"
 #include "../color.h"
 
 #include "catch.h"
 
 TEST_CASE("set creation", "[disjoint]")
 {
-    SECTION("set singleton")
+    SECTION("Color set singleton")
     {
-        Disjoint colorSet(0,0);
-        REQUIRE(colorSet.find() == Coord(0,0));
+        Disjoint<Color> colorSet(Color::white);
+        REQUIRE(colorSet.repr()->content == Color::white);
     }
 
+    SECTION("std::string set singleton")
+    {
+        Disjoint<std::string> strSet("hello");
+        REQUIRE(strSet.repr()->content == std::string("hello"));
+    }
 }
 
 TEST_CASE("set unions", "[disjoint]")
 {
-    auto o = Color::black;
-    auto _ = Color::white;
-    ColorMatrix bitmap = {
-        {o,_,o},
-        {_,_,_}
-    };
-
     SECTION("basic function")
     {
-        auto a = std::make_shared<Disjoint>(0,1);
-        auto b = std::make_shared<Disjoint>(1,1);
+        Disjoint<std::string> a("foo");
+        Disjoint<std::string> b("bar");
+        Disjoint<std::string> c("foo");
 
-        Disjoint::unite(a, b, bitmap);
-        REQUIRE(a == b);
-        REQUIRE(a->size() == 2);
-        REQUIRE(b->size() == 2);
+        Disjoint<std::string>::unite(&a, &b);
+        REQUIRE(a.repr() != b.repr());
+        REQUIRE(a.size() == 2);
+        REQUIRE(b.size() == 0);
+        Disjoint<std::string>::unite(&a, &c);
+        REQUIRE(a.repr() != c.repr());
+        REQUIRE(a.size() == 3);
+        REQUIRE(c.size() == 0);
     }
-    SECTION("multiple element unions")
+
+    SECTION("uniting with oneself")
     {
-        auto a = std::make_shared<Disjoint>(0,1);
-        auto b = std::make_shared<Disjoint>(1,1);
-        auto c = std::make_shared<Disjoint>(2,1);
-        auto d = std::make_shared<Disjoint>(1,0);
+        Disjoint<std::string> a("foo");
+        Disjoint<std::string> b("foo");
 
-        std::vector<std::shared_ptr<Disjoint>> setVec =
-        {a, b, c, d};
-        for (std::size_t i = 0; i < setVec.size()-1; ++i) {
-            Disjoint::unite(setVec[i], setVec[i+1], bitmap);
-        }
-        for(auto ptr : setVec)
-                REQUIRE(setVec[0] == ptr);
+        Disjoint<std::string>::unite(&a, &b);
+
+        REQUIRE(a.size() == 2);
+        REQUIRE(b.size() == 0);
+
+        Disjoint<std::string>::unite(&a, &a);
+
+        REQUIRE(a.size() == 2);
+        REQUIRE(b.size() == 0);
     }
-}*/
+
+}

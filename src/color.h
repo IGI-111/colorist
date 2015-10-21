@@ -32,6 +32,4 @@ class Color{
             black;
 };
 
-typedef Matrix<Color> ColorMatrix;
-
 #endif /* end of include guard: COMMON_H_X2AOOYW9 */

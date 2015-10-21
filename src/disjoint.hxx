@@ -1,26 +1,33 @@
+#ifndef DISJOINT_HXX_LUKY53GS
+#define DISJOINT_HXX_LUKY53GS
+
 #include "disjoint.h"
 #include <memory>
 #include <iostream>
 
-Disjoint::Disjoint(const Color &singleton) :
+template <typename T>
+Disjoint<T>::Disjoint(const T &singleton) :
     length(1)
 {
-    emplace_front(this, singleton);
+    this->emplace_front(this, singleton);
 }
 
-Node *Disjoint::repr()
+template <typename T>
+Node<T> *Disjoint<T>::repr()
 {
-    return &front();
+    return &this->front();
 }
 
-std::size_t Disjoint::size() const
+template <typename T>
+std::size_t Disjoint<T>::size() const
 {
     return length;
 }
 
-void Disjoint::unite(
-        Disjoint *first,
-        Disjoint *second)
+template <typename T>
+void Disjoint<T>::unite(
+        Disjoint<T> *first,
+        Disjoint<T> *second)
 {
     // union on yourself will only bring trouble
     if(first->repr() == second->repr())
@@ -47,3 +54,5 @@ void Disjoint::unite(
     first->length = first->length + second->length;
     second->length = 0;
 }
+
+#endif /* end of include guard: DISJOINT_HXX_LUKY53GS */

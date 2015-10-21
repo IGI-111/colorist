@@ -45,7 +45,7 @@ TEST_CASE("reading PBM file", "[pbm]")
 
         auto o = Color::black;
         auto _ = Color::white;
-        const ColorMatrix reference = {
+        const Matrix<Color> reference = {
             {_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_},
             {_,o,o,o,o,_,_,o,o,o,o,_,_,o,o,o,o,_,_,o,o,o,o,_},
             {_,o,_,_,_,_,_,o,_,_,_,_,_,o,_,_,_,_,_,o,_,_,o,_},
@@ -71,16 +71,16 @@ TEST_CASE("reading PBM file", "[pbm]")
 
 TEST_CASE("writing invalid matrix to PPM file", "[ppm]")
 {
-    SECTION("empty ColorMatrix")
+    SECTION("empty Matrix<Color>")
     {
-        ColorMatrix empty = {};
+        Matrix<Color> empty = {};
         REQUIRE_THROWS_AS(
                 writeColored(empty, "bin/out.ppm"),
                 std::logic_error);
     }
-    SECTION("nonrectangular ColorMatrix")
+    SECTION("nonrectangular Matrix<Color>")
     {
-        ColorMatrix totallyARectangleISwear = {{},{Color::black}};
+        Matrix<Color> totallyARectangleISwear = {{},{Color::black}};
         REQUIRE_THROWS_AS(
                 writeColored(totallyARectangleISwear, "bin/out.ppm"),
                 std::logic_error);
