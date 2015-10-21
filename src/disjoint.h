@@ -11,16 +11,16 @@ class Disjoint;
 
 struct Node{
     Node() {}
-    Node(const Color &content) :
-        content(content) {}
+    Node(Disjoint *parent, const Color &content) :
+        parent(parent), content(content) {}
     Disjoint *parent;
     Color content;
 };
 
-class Disjoint : public std::forward_list<Node*>{
+class Disjoint : private std::forward_list<Node>{
     public:
-        Disjoint(Node *singleton);
-        Disjoint() : std::forward_list<Node*>() {}
+        Disjoint(const Color &singleton);
+        Disjoint() : std::forward_list<Node>() {}
         Node *repr();
         std::size_t size() const;
 

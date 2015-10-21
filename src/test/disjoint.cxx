@@ -1,4 +1,4 @@
-#include "../disjoint.h"
+/*#include "../disjoint.h"
 #include "../color.h"
 
 #include "catch.h"
@@ -47,4 +47,4 @@ TEST_CASE("set unions", "[disjoint]")
         for(auto ptr : setVec)
                 REQUIRE(setVec[0] == ptr);
     }
-}
+}*/

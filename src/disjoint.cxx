@@ -2,16 +2,15 @@
 #include <memory>
 #include <iostream>
 
-Disjoint::Disjoint(Node *singleton) :
+Disjoint::Disjoint(const Color &singleton) :
     length(1)
 {
-    push_front(singleton);
-    front()->parent = this;
+    emplace_front(this, singleton);
 }
 
 Node *Disjoint::repr()
 {
-    return front();
+    return &front();
 }
 
 std::size_t Disjoint::size() const
@@ -34,8 +33,8 @@ void Disjoint::unite(
     // and change colors accordingly
     auto newColor = first->repr()->content;
     for(auto node : *second){
-        node->parent = first;
-        node->content = newColor;
+        node.parent = first;
+        node.content = newColor;
     }
 
     // move all elements from second inside the first
