@@ -27,6 +27,9 @@ void Disjoint::unite(
     if(first->repr() == second->repr())
         return;
 
+    if(first->size() < second->size())
+        std::swap(first, second);
+
     // redirect head pointers for second
     // and change colors accordingly
     auto newColor = first->repr()->content;

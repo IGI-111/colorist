@@ -17,38 +17,23 @@ void colorize(Matrix<Node> &nodes)
                 nodes.at(x,y).content = Color(dis(eng), dis(eng), dis(eng));
 }
 
-void unite(
-        const Coord &c1,
-        const Coord &c2,
-        const Matrix<Node> &nodes)
-{
-    auto set1 = nodes.at(c1).parent;
-    auto set2 = nodes.at(c2).parent;
-
-    // let's do less operations if we can
-    if(set1->size() < set2->size())
-        Disjoint::unite(set2, set1);
-    else
-        Disjoint::unite(set1, set2);
-}
-
 void unionize(const Matrix<Node> &nodes)
 {
     for (std::size_t y = 0; y < nodes.size(); ++y)
         for (std::size_t x = 0; x < nodes[y].size(); ++x){
             if(nodes.at(x,y).content != Color::black){
-                auto here = Coord(x,y);
+                auto here = nodes.at(x,y).parent;
 
-                auto onRight = Coord(x+1,y);
+                auto onRight = nodes.at(x+1,y).parent;
                 if(x+1 < nodes[y].size() &&
-                        nodes.at(onRight).content != Color::black){
-                    unite(here, onRight, nodes);
+                        nodes.at(x+1, y).content != Color::black){
+                    Disjoint::unite(here, onRight);
                 }
 
-                auto onBottom = Coord(x,y+1);
+                auto onBottom = nodes.at(x,y+1).parent;
                 if(y+1 < nodes.size() &&
-                        nodes.at(onBottom).content != Color::black){
-                    unite(here, onBottom, nodes);
+                        nodes.at(x, y+1).content != Color::black){
+                    Disjoint::unite(here, onBottom);
                 }
             }
         }
