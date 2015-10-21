@@ -5,7 +5,7 @@
 #include "matrix.h"
 #include <memory>
 #include <vector>
-#include <list>
+#include <forward_list>
 
 class Disjoint;
 
@@ -17,10 +17,10 @@ struct Node{
     Color content;
 };
 
-class Disjoint : public std::list<Node*>{
+class Disjoint : public std::forward_list<Node*>{
     public:
         Disjoint(Node *singleton);
-        Disjoint() : std::list<Node*>() {}
+        Disjoint() : std::forward_list<Node*>() {}
         Node *repr();
         std::size_t size() const;
 

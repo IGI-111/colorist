@@ -1,8 +1,6 @@
 #include <iostream>
-#include <iomanip>
-#include <algorithm>
-#include <map>
-#include <set>
+#include <random>
+#include <list>
 #include "pixmap.h"
 #include "disjoint.h"
 

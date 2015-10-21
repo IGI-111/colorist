@@ -5,7 +5,7 @@
 Disjoint::Disjoint(Node *singleton) :
     length(1)
 {
-    push_back(singleton);
+    push_front(singleton);
     front()->parent = this;
 }
 
@@ -35,8 +35,11 @@ void Disjoint::unite(
         node->content = newColor;
     }
 
-    // move all elements from second at the end of first
-    first->splice(first->end(), *second);
+    // move all elements from second inside the first
+    // naive approach is to use a tail pointer
+    // but since we don't care about order and insertion is O(1),
+    // we can just put them at the beginning
+    first->splice_after(first->begin(), *second);
 
     // update size values
     first->length = first->length + second->length;
