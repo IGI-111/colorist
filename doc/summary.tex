@@ -4,6 +4,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{biblio.bib}
+
 
 \title{\textbf{TP Algorithmique \& Programmation} \\ Coloriage d'images}
 \author{Vincent Bonnecuelle et Jibril Saffi}
@@ -15,7 +19,7 @@
 
 \renewcommand\thesubsection{\arabic{subsection}}
 
-\titleformat{\subsubsection}[runin]
+\titleformat{\subsubsection}
 {\normalfont\large\bfseries}{Question \thesubsubsection}{1em}{}
 
 \titleformat{\subsection}[runin]
@@ -24,26 +28,24 @@
 \titleformat{\section}[runin]
 {\normalfont\large\bfseries}{}{1em}{}
 
-\renewcommand{\O}{\mathcal{O}}
-
 \begin{document}
 \maketitle
 \hrule
 \section*{Réponses aux questions}
 \subsection{Lecture/écriture de données}
 \subsubsection{} 
-Nous avons identifié les cas d'erreurs suivants :
+Nous avons identifié les cas d'erreurs suivants pour la fonction \texttt{readMonochrome()} :
 \begin{itemize}
 \item le fichier n'est pas du bon type
 \item il manque des valeurs dans le fichier par rapport au header spécifié
 \item la forme du header n'est pas valide 
-\item n*m ne renvoie pas un entier positif ou nul.
+\item $n \cdot m$ ne renvoie pas un entier positif ou nul.
+\item un commentaire est placé après le "nombre magique"
 \end{itemize}
 Les tests pour ces erreurs sont présents dans le fichier \textit{src/test/pixmap.cxx}.
 
-\subsubsection{}
-guarantee : Les erreurs concernant la validité des éléments de la structure sont impossibles car c++ est un langage fortement et statiquement typé or les couleurs sont modélisées avec des unsigned char.  
-Nous avons identifié les cas d'erreurs suivants :
+\subsubsection{} 
+Nous avons identifié les cas d'erreurs suivants pour la fonction \texttt{writeColored()} :
 \begin{itemize}
 \item le tableau bidimensionnel de pixels de couleur est vide
 \item le tableau bidimensionnel de pixels de couleur n'est pas rectangulaire : il faut que les lignes aient la même longueur.
@@ -51,42 +53,80 @@ Nous avons identifié les cas d'erreurs suivants :
 Les tests pour ces erreurs sont présents dans le fichier \textit{src/test/pixmap.cxx}.
 
 \subsubsection{}
-L'implémentation de la fonction \textbf{randomMonochrome} se trouve dans le fichier \textit{src/pixmap.cxx}.
+L'implémentation de la fonction \texttt{randomMonochrome()} se trouve dans le fichier \textit{src/pixmap.cxx}. Un paramètre a été ajouté pour permettre à l'utilisateur de sélectionner une méthode de distribution aléatoire.
 
-\subsection{MakeSet() et FindSet()}
+\clearpage
+\subsection{\texttt{MakeSet()} et \texttt{FindSet()}}
 
 \subsubsection{}
-Les tests suivants ont été réalisés pour MakeSet() et FindSet() :
+Les tests suivants ont été réalisés pour les fonctions {\texttt{MakeSet()} et \texttt{FindSet()} :
 \begin{itemize}
-\item Initialisation avec une coordonnée
-\item Création d'un ensemble et verification de l'existence de cet ensemble avec FindSet()
+\item Initialisation avec une coordonnée incohérente
+\item Création d'un ensemble et vérification de l'existence de cet ensemble avec FindSet()
 \end{itemize}
 
-\subsubsection{}
-Complexité de MakeSet = complexité de FindSet = $\Theta(1)$
+\subsubsection{} \label{2.2}
+La complexité de \texttt{MakeSet()} est égale à celle de \texttt{FindSet()} soit $\Theta(1)$.
 
 \subsection{Union()}
+\subsubsection{} \label{3.1}
+Soit 2 ensembles disjoints $S_{1}$ et $S_{2}$ représentés par les listes chaînées $L_{1}$ et $L_{2}$. Afin de réaliser l'union de ces 2 ensembles, la solution naïve consiste à joindre la tête de $L_{2}$ à la queue de $L_{1}$ et de mettre à jour tous les éléments (dont le représentant) de $L_{2}$ afin que ces derniers pointent sur le représentant de $L_{1}$.
+
+\begin{figure}[h]
+\centering
+\includegraphics{3-1.pdf}
+\caption{Mécanisme de \texttt{Union()}}
+\end{figure}
+
+Si l'on considère que le pire cas correspond au cas où chaque union ferait systématiquement parcourir l'ensemble le plus grand (pour mettre à jour les éléments). Alors pour $n$ unions on doit faire $n(n-1)?$ opérations\footnote{avec $k? = \sum\limits_{i=1}^{k}{i}$} or:
+$$O(n(n-1)?) =  O(n(2(n-1))) = O(n^2)$$
+
+Concernant le coût mémoire, aucunes variables supplémentaires n'est nécessaire car on se contente de modifier la structure d'une liste préalablement existante. Ainsi, le coût en mémoire serait de $O(1)$.
 \subsubsection{}
-Soit 2 ensembles disjoints $S_{x}$ et $S_{y}$ représentés par les listes chainées $L_{x}$ et $L_{y}$. Afin de réaliser l'union de ces 2 ensembles, la solution naïve consiste à joindre la tête de $L_{y}$ à la queue de $L_{x}$ et de mettre à jour le representant de $L_{y}$ afin que tout les éléments de $L_{y}$ pointent sur le représentant de $L_{x}$.
 
-TODO : faire un dessin 
-
-Si l'on considère que le pire cas correspond au cas où chaque union ferait systématiquement parcourir l'ensemble le plus grand (pour mettre à jour le représentant). Ainsi pour $n$ unions on doit faire $n(n-1)?$ opérations\footnote{avec $k? = \sum\limits_{i=1}^{k}{i}$} or:
-\[\O(n(n-1)?) =  \O(n(2(n-1))) = \O(n^2)\]
-
-Aucune variable supplémentaire n'est nécessaire, on se contente de changer la structure de la liste donc le coût en mémoire est $\O(1)$.
-\subsubsection{}
-
-la création d'un ensemble est de complexité $\O(1)$ donc $n$ créations d'ensembles aura pour compexité $\O(n)$. Suivie d'unions successives, la complexité est de :
-\[\O(n + (n-1)^2) = \O(n^2)\].
-
-\subsubsection{}
-
-
-\subsubsection{}
-\textit{Voir fichier src/disjoint.cxx}
+la création d'un ensemble est de complexité $O(1)$ donc $n$ créations d'ensembles aura pour complexité $O(n)$. Succédée de $n$ unions successives, la complexité atteindrais donc :
+$$O(n + (n-1)^2) = O(n^2)$$
 
 \subsubsection{}
-\[\O(n\log(n))\]
+Dans la question~\ref{3.1} nous avons dégagé une problématique intéressante : si la taille de $L_{2}$ est supérieure à celle de $L_{1}$ nous sommes tout de même contraint de parcourir entièrement la liste $L_{2}$ pour pouvoir joindre celle-ci à $L_{1}$. Aussi, nous avons effectués une modification à la structure de données de liste chaînée : l'\textbf{ajout d'un champ représentant la taille de la liste}.
+
+Grâce à cette information supplémentaire, il nous est désormais possible d'optimiser l'union de deux ensembles. Pour ce faire, on compare la taille des deux listes afin de systématiquement \textbf{joindre la tête de la liste la plus petite vers la queue de la liste la plus grande} et ainsi minimiser le temps de parcours nécessaire à la mise à jour des éléments.
+
+\subsubsection{}
+\textit{Voir fichier src/disjoint.hxx}
+
+\subsubsection{}\label{3.5}
+L'union implique nécessairement deux ensembles disjoints, nous réalisons donc au minimum $n-1$ opérations d'unions. Considérant un élément $x$ de la liste, nous savons que chaque fois que $x$ est mis à jour, il doit être contenu dans l'ensemble le plus petit. Aussi, la première fois que $x$ est mis à jour, l'ensemble résultant doit contenir au moins 2 éléments. De la même manière, la prochaine fois que $x$ est mis à jour, l'ensemble résultant devra quand à lui contenir au moins 4 éléments. En continuant ainsi, on remarque comme vu en figure~\ref{fig:tree} que pour tout $k \leq n$, si $x$ a été mis à jour $\log(k)$ fois, l'ensemble résultant contient alors $k$ éléments.
+
+\begin{figure}
+\centering
+\includegraphics{3-5.pdf}
+\caption{Les \texttt{Union()} décrivent un arbre binaire de profondeur $\log(n)$}
+\label{fig:tree}
+\end{figure}
+
+
+Or l'ensemble le plus grand contient au maximum $n$ éléments, donc chacun de ces éléments est au moins mis à jour $\log(n)$ fois lors des opérations d'unions. Ainsi le temps total alloué à la mise à jour des éléments lors de toutes les opérations d'unions est : 
+$$O(n\log(n))$$
+De plus comme montré en~\ref{2.2} l'opération \texttt{MakeSet()} a une complexité $O(1)$ et on fait $n$ opérations.
+La complexité totale de la suite d'opérations est donc:
+$$O(n+n\log(n)) = O(n\log(n)$$
+
+\subsection{Algorithme général}
+\subsubsection{}
+\subsubsection{}
+Soit $n$ et $m$ respectivement la longueur et largeur de l'image.
+Comme vu en~\ref{2.2}, le coût en mémoire de \texttt{MakeSet()} est $O(1)$ et on réalise $n \cdot m$ créations d'ensembles, le coût total en mémoire est donc
+$$O(n\cdot{m})$$
+
+Par ailleurs, d'après la réponse~\ref{3.5} pour $n\cdot{m}$ créations d'ensembles, la complexité de l'algorithme est
+$$O((n\cdot{m})\log(n\cdot{m}))$$
+\subsubsection{}
+
+\subsection{Bonus}
+\subsubsection{}
+
+\clearpage
+\printbibliography
 
 \end{document}
