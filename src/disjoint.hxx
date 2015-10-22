@@ -2,8 +2,6 @@
 #define DISJOINT_HXX_LUKY53GS
 
 #include "disjoint.h"
-#include <memory>
-#include <iostream>
 
 template <typename T>
 Disjoint<T>::Disjoint(const T &singleton) :

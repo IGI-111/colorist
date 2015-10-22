@@ -1,10 +1,6 @@
 #ifndef DISJOINT_H_ONOUD6RJ
 #define DISJOINT_H_ONOUD6RJ
 
-#include "color.h"
-#include "matrix.h"
-#include <memory>
-#include <vector>
 #include <forward_list>
 
 template <typename T> class Disjoint;
@@ -21,14 +17,14 @@ struct Node{
 template <typename T>
 class Disjoint : private std::forward_list<Node<T>>{
     public:
-        Disjoint(const T &singleton);
+        Disjoint(const T &singleton); // MakeSet()
         Disjoint() : std::forward_list<Node<T>>() {}
-        Node<T> *repr();
+        Node<T> *repr(); // FindSet()
         std::size_t size() const;
 
         static void unite(
                 Disjoint *first,
-                Disjoint *second);
+                Disjoint *second); // Union()
     private:
         std::size_t length;
 };

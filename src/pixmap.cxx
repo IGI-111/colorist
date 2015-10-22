@@ -1,11 +1,10 @@
+#include "pixmap.h"
 #include <fstream>
 #include <limits>
 #include <vector>
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <random>
-#include "pixmap.h"
 
 namespace {
     unsigned readValue(std::ifstream &stream)
@@ -36,7 +35,7 @@ namespace {
     }
 }
 
-Matrix<Color> readMonochrome(const std::string &filename)
+Matrix<Color> pixmap::readMonochrome(const std::string &filename)
 {
     std::ifstream file(filename);
 
@@ -50,9 +49,9 @@ Matrix<Color> readMonochrome(const std::string &filename)
     auto height = readValue(file);
 
     Matrix<Color> lines;
-    for (unsigned i = 0; i < height; ++i) {
+    for (std::size_t i = 0; i < height; ++i) {
         std::vector<Color> line;
-        for (unsigned i = 0; i < width; ++i){
+        for (std::size_t i = 0; i < width; ++i){
             auto val = readValue(file);
             if(val == 1)
                 line.push_back(Color(0,0,0));
@@ -70,7 +69,7 @@ Matrix<Color> readMonochrome(const std::string &filename)
 
 
 
-void writeColored(const Matrix<Color> &bitmap, const std::string &filename)
+void pixmap::writeColored(const Matrix<Color> &bitmap, const std::string &filename)
 {
     auto depth = maxDepth(bitmap);
     auto height = bitmap.size();
@@ -91,7 +90,7 @@ void writeColored(const Matrix<Color> &bitmap, const std::string &filename)
 
     for(auto line : bitmap){
         // counting line length to avoid going over the 70 chars limit
-        unsigned lineLength = 0;
+        std::size_t lineLength = 0;
         for(auto val : line){
             std::stringstream valToAdd;
 
@@ -111,17 +110,16 @@ void writeColored(const Matrix<Color> &bitmap, const std::string &filename)
     }
 }
 
-Matrix<Color> randomMonochrome(const unsigned width, const unsigned height)
+Matrix<Color> pixmap::randomMonochrome(const unsigned width, const unsigned height)
 {
-
     static std::random_device rd;
     static std::default_random_engine eng(rd());
     static std::uniform_int_distribution<unsigned> dis(0, 1);
 
     Matrix<Color> bitmap;
-    for(unsigned j = 0; j < height; ++j){
+    for(std::size_t j = 0; j < height; ++j){
         std::vector<Color> row;
-        for(unsigned i = 0; i < width; ++i)
+        for(std::size_t i = 0; i < width; ++i)
             row.push_back(dis(eng) ? Color::black : Color::white);
         bitmap.push_back(row);
     }
