@@ -1,6 +1,9 @@
 #ifndef MATRIX_H_7QJYTZ6X
 #define MATRIX_H_7QJYTZ6X
 
+#include <utility>
+#include <vector>
+
 typedef std::pair<std::size_t, std::size_t> Coord;
 
 template <typename T>

@@ -1,10 +1,6 @@
 #ifndef DISJOINT_H_ONOUD6RJ
 #define DISJOINT_H_ONOUD6RJ
 
-#include "color.h"
-#include "matrix.h"
-#include <memory>
-#include <vector>
 #include <forward_list>
 
 template <typename T> class Disjoint;

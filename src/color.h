@@ -1,9 +1,6 @@
 #ifndef COMMON_H_X2AOOYW9
 #define COMMON_H_X2AOOYW9
 
-#include <vector>
-#include "matrix.h"
-
 class Color{
     public:
         unsigned char r, g, b;
