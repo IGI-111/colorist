@@ -58,4 +58,5 @@ clean:
 doc: $(DOCTARGET)
 
 $(DOCTARGET) : $(DOCSOURCE)
-	cd $(DOCDIR); $(LATEX) ../$<
+	@cd $(DOCDIR); $(LATEX) ../$<
+	@echo "Compiled "$<" successfully!"
