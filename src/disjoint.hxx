@@ -2,6 +2,7 @@
 #define DISJOINT_HXX_LUKY53GS
 
 #include "disjoint.h"
+#include <stdexcept>
 
 template <typename T>
 Disjoint<T>::Disjoint(const T &singleton) :
@@ -13,7 +14,7 @@ Disjoint<T>::Disjoint(const T &singleton) :
 template <typename T>
 Node<T> *Disjoint<T>::repr()
 {
-    return &this->front();
+    return &(this->front());
 }
 
 template <typename T>
@@ -27,7 +28,10 @@ void Disjoint<T>::unite(
         Disjoint<T> *first,
         Disjoint<T> *second)
 {
-    // union on yourself will only bring trouble
+    if(first->size() == 0 || second->size() == 0)
+        throw std::logic_error("Trying to unite with empty set");
+
+    // union on yourself is a noop
     if(first->repr() == second->repr())
         return;
 
@@ -36,10 +40,10 @@ void Disjoint<T>::unite(
 
     // redirect head pointers for second
     // and change colors accordingly
-    auto newColor = first->repr()->content;
-    for(auto node : *second){
+    auto newContent = first->repr()->content;
+    for(auto &node : *second){
         node.parent = first;
-        node.content = newColor;
+        node.content = newContent;
     }
 
     // move all elements from second inside the first
