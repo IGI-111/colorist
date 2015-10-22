@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[a4paper]{geometry}
+\usepackage[a4paper, scale=0.8]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
@@ -57,7 +57,7 @@ L'implémentation de la fonction \texttt{randomMonochrome()} se trouve dans le f
 \subsection{\texttt{MakeSet()} et \texttt{FindSet()}}
 
 \subsubsection{}
-Pour tester conjointement les fonctions {\texttt{MakeSet()} et \texttt{FindSet()} nous avons procédé à la création d'un ensemble avec {\texttt{MakeSet()} et la vérification de l'existence de ce dernier avec \texttt{FindSet()}.
+Pour tester conjointement les fonctions \texttt{MakeSet()} et \texttt{FindSet()} nous avons procédé à la création d'un ensemble avec {\texttt{MakeSet()} et la vérification de l'existence de ce dernier avec \texttt{FindSet()}.
 Ce test est présent dans le fichier \textit{src/test/pixmap.cxx}.
 
 \subsubsection{} \label{2.2}
@@ -83,7 +83,7 @@ La création d'un ensemble a pour complexité $O(1)$ donc $n$ créations d'ensem
 $$O(n + (n-1)^2) = O(n^2)$$
 
 \subsubsection{}
-Dans la question~\ref{3.1} nous avons dégagé une problématique intéressante : si la taille de $L_{2}$ est supérieure à celle de $L_{1}$ nous sommes tout de même contraint de parcourir entièrement la liste $L_{2}$ pour pouvoir joindre celle-ci à $L_{1}$. Aussi, nous avons effectué une modification à la structure de données de liste chaînée : l'\textbf{ajout d'un champ représentant la taille de la liste}.
+Dans la question~\ref{3.1} nous avons dégagé une problématique intéressante : si la taille de $L_{2}$ est supérieure à celle de $L_{1}$ nous sommes tout de même contraint de parcourir entièrement la liste $L_{2}$ pour pouvoir joindre celle-ci à $L_{1}$. Aussi, nous avons effectué une modification à la structure de données de liste chaînée : \textbf{l'ajout d'un champ représentant la taille de la liste}.
 
 Grâce à cette information supplémentaire, il nous est désormais possible d'optimiser l'union de deux ensembles. Pour ce faire, on compare la taille des deux listes afin de systématiquement \textbf{joindre la tête de la liste la plus petite vers la queue de la liste la plus grande} et ainsi minimiser le temps de parcours nécessaire à la mise à jour des éléments.
 
@@ -135,8 +135,8 @@ Il nous suffit ensuite de mettre à jour le dernier élément de la seconde list
 \hrule
 \begin{thebibliography}{9}
 \bibitem{Introduction to algorithms} 
-Charles E. Leiserson, Thomas H. Cormen, Clifford Stein and Ronald Rivest. 
-\textit{Introduction to algorithms}. 
+Charles E. Leiserson, Thomas H. Cormen, Clifford Stein and Ronald Rivest
+\textit{Introduction to algorithms}.
 MIT Press, 1990.
 \end{thebibliography}
 

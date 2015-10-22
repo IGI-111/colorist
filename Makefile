@@ -10,18 +10,23 @@ CFLAGS   = -Wall -g -std=c++14
 # Catch unit testing
 CATCHFLAGS = -r compact
 
+LATEX = pdflatex
+
 # Project directories
 SRCDIR   = src
 OBJDIR   = obj
 BINDIR   = bin
 TESTDIR  = src/test
+DOCDIR   = doc
 
 ##################################################
 
 rm       = rm -f
 
-SOURCES  := $(wildcard $(SRCDIR)/*.cxx)
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.cxx=$(OBJDIR)/%.o)
+SOURCES := $(wildcard $(SRCDIR)/*.cxx)
+OBJECTS := $(SOURCES:$(SRCDIR)/%.cxx=$(OBJDIR)/%.o)
+DOCSOURCE := $(DOCDIR)/summary.tex
+DOCTARGET := $(DOCDIR)/summary.pdf
 
 TEST_SOURCES  := $(wildcard $(TESTDIR)/*.cxx) $(filter-out $(SRCDIR)/main.cxx,$(SOURCES))
 TEST_OBJECTS  := $(TEST_SOURCES:$(SRCDIR)/%.cxx=$(OBJDIR)/%.o)
@@ -45,5 +50,12 @@ $(BINDIR)/test : $(TEST_OBJECTS)
 
 .PHONEY: clean
 clean:
-	@$(rm) $(wildcard $(OBJDIR)/*.o $(OBJDIR)/test/*.o) $(BINDIR)/$(TARGET) $(BINDIR)/test
+	@$(rm) $(wildcard $(OBJDIR)/*.o $(OBJDIR)/test/*.o) $(BINDIR)/$(TARGET) $(BINDIR)/test $(DOCTARGET) $(wildcard $(DOCDIR)/*.log $(DOCDIR)/*.aux)
 	@echo "Cleanup complete!"
+
+
+.PHONEY: doc
+doc: $(DOCTARGET)
+
+$(DOCTARGET) : $(DOCSOURCE)
+	cd $(DOCDIR); $(LATEX) ../$<
