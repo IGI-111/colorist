@@ -31,7 +31,7 @@ DOCTARGET := $(DOCDIR)/summary.pdf
 TEST_SOURCES  := $(wildcard $(TESTDIR)/*.cxx) $(filter-out $(SRCDIR)/main.cxx,$(SOURCES))
 TEST_OBJECTS  := $(TEST_SOURCES:$(SRCDIR)/%.cxx=$(OBJDIR)/%.o)
 
-all: $(BINDIR)/$(TARGET) test
+all: $(BINDIR)/$(TARGET) test doc
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
 	@$(CC) -o $@ $(CFLAGS) $(OBJECTS)
