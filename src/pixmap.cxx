@@ -35,7 +35,7 @@ namespace {
     }
 }
 
-Matrix<Color> readMonochrome(const std::string &filename)
+Matrix<Color> pixmap::readMonochrome(const std::string &filename)
 {
     std::ifstream file(filename);
 
@@ -69,7 +69,7 @@ Matrix<Color> readMonochrome(const std::string &filename)
 
 
 
-void writeColored(const Matrix<Color> &bitmap, const std::string &filename)
+void pixmap::writeColored(const Matrix<Color> &bitmap, const std::string &filename)
 {
     auto depth = maxDepth(bitmap);
     auto height = bitmap.size();
@@ -110,7 +110,7 @@ void writeColored(const Matrix<Color> &bitmap, const std::string &filename)
     }
 }
 
-Matrix<Color> randomMonochrome(const unsigned width, const unsigned height)
+Matrix<Color> pixmap::randomMonochrome(const unsigned width, const unsigned height)
 {
     static std::random_device rd;
     static std::default_random_engine eng(rd());

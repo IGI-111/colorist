@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+using namespace pixmap;
+
 TEST_CASE("read invalid file", "[pbm]")
 {
     SECTION("read another type of file")
