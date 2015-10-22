@@ -18,7 +18,6 @@ template <typename T>
 class Disjoint : private std::forward_list<Node<T>>{
     public:
         Disjoint(const T &singleton); // MakeSet()
-        Disjoint() : std::forward_list<Node<T>>() {}
         Node<T> *repr(); // FindSet()
         std::size_t size() const;
 

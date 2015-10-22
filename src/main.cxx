@@ -28,6 +28,7 @@ namespace {
                         auto onRight = nodes.at(x+1,y)->parent;
                         Disjoint<Color>::unite(here, onRight);
                     }
+                    here = nodes.at(x,y)->parent; // might have changed during union
                     if(y+1 < nodes.size() &&
                             nodes.at(x, y+1)->content != Color::black){
                         auto onBottom = nodes.at(x,y+1)->parent;
