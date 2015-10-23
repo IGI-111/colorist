@@ -125,12 +125,21 @@ Par ailleurs, d'après la réponse~\ref{3.5} pour $n\cdot{m}$ créations d'ensem
 $$O((n\cdot{m})\log(n\cdot{m}))$$
 
 \subsubsection{}
+On observe en figure~\ref{fig:graph} que la complexité en temps semble tendre bien en dessous de sa complexité asymptotique en pire cas, ce qui nous pousse à conjecturer que le pire cas est rarement atteint.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.49\linewidth]{graph1.pdf}
+\includegraphics[width=0.49\linewidth]{graph2.pdf}
+\caption{$(x \cdot y)\log(x \cdot y)$ vs temps d'execution de l'algorithme sur une image aléatoire de taille $x \cdot y$}
+\label{fig:graph}
+\end{figure}
 
 \subsection{Bonus}
 Plut\^ot que d'ajouter la seconde liste à la fin de la première, on peut se contenter de l'insérer au début, l'ordre n'ayant pas d'importance.
 Pour cela il nous faut tout de même accéder au dernier élément de la seconde liste, mais étant donné qu'on doit la parcourir pour mettre à jour ses pointeurs vers le représentant, on récupère ainsi simplement un pointeur vers celui-ci.
 
 Il nous suffit ensuite de mettre à jour le dernier élément de la seconde liste et le pointeur vers la t\^ete de la première, exactement comme pour une \texttt{Union()} classique.
+
 \vfill
 \hrule
 \begin{thebibliography}{9}

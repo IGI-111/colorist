@@ -10,7 +10,7 @@ CFLAGS   = -Wall -g -std=c++14
 # Catch unit testing
 CATCHFLAGS = -r compact
 
-LATEX = pdflatex
+LATEX = pdflatex -interaction nonstopmode
 
 # Project directories
 SRCDIR   = src
