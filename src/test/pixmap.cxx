@@ -32,7 +32,7 @@ TEST_CASE("read invalid file", "[pbm]")
         REQUIRE_THROWS(
                 readMonochrome("sample/randomGarbage"));
     }
-    SECTION("readf file with negative header values")
+    SECTION("read file with negative header values")
     {
         REQUIRE_THROWS(
                 readMonochrome("sample/reallyBrokenFeep.pbm"));
