@@ -58,5 +58,5 @@ clean:
 doc: $(DOCTARGET)
 
 $(DOCTARGET) : $(DOCSOURCE)
-	@cd $(DOCDIR); $(LATEX) ../$< 2<&1 > /dev/null
+	@cd $(DOCDIR); $(LATEX) ../$< 2<&1 > /dev/null; $(LATEX) ../$< 2<&1 > /dev/null
 	@echo "Compiled "$<" successfully!"
