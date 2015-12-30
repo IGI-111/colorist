@@ -1,4 +1,5 @@
 #Colorist
+![Example](./sample/example.ppm)
 
 Compiler ce programme nécessite un compilateur C++14 et CMake.
 Pour compiler et lancer les tests:
