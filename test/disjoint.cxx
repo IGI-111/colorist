@@ -1,5 +1,5 @@
-#include "../disjoint.h"
-#include "../color.h"
+#include "../src/disjoint.h"
+#include "../src/color.h"
 
 #include "catch.h"
 

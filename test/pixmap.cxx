@@ -1,5 +1,5 @@
-#include "../pixmap.h"
-#include "../color.h"
+#include "../src/pixmap.h"
+#include "../src/color.h"
 
 #define CATCH_CONFIG_MAIN
 #include "catch.h"
