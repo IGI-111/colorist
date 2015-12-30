@@ -7,121 +7,116 @@
 #include <random>
 
 namespace {
-    unsigned readValue(std::ifstream &stream)
-    {
-        std::string buf;
-        stream >> buf;
-        while(buf[0] == '#'){
-            // ignore rest of line since it's a comment
-            stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            stream >> buf;
-        }
-        return std::stoul(buf);
-    }
-
-    unsigned maxDepth(const Matrix<Color> &matrix)
-    {
-        unsigned max = 0;
-        for(auto line : matrix)
-            for(auto col : line){
-                if(col.r > max)
-                    max = col.r;
-                if(col.g > max)
-                    max = col.g;
-                if(col.b > max)
-                    max = col.b;
-            }
-        return max;
-    }
+unsigned readValue(std::ifstream &stream) {
+  std::string buf;
+  stream >> buf;
+  while (buf[0] == '#') {
+    // ignore rest of line since it's a comment
+    stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    stream >> buf;
+  }
+  return std::stoul(buf);
 }
 
-Matrix<Color> pixmap::readMonochrome(const std::string &filename)
-{
-    std::ifstream file(filename);
-
-    std::string buf;
-    file >> buf;
-    if(buf != "P1")
-        throw std::runtime_error(
-                "Trying to read PBM file with wrong magic identifier: " + buf);
-
-    auto width = readValue(file);
-    auto height = readValue(file);
-
-    Matrix<Color> lines;
-    for (std::size_t i = 0; i < height; ++i) {
-        std::vector<Color> line;
-        for (std::size_t i = 0; i < width; ++i){
-            auto val = readValue(file);
-            if(val == 1)
-                line.push_back(Color(0,0,0));
-            else if(val == 0)
-                line.push_back(Color(255,255,255));
-            else
-                throw std::runtime_error("Invalid color descriptor: " +
-                        std::to_string(val));
-        }
-        lines.push_back(line);
+unsigned maxDepth(const Matrix<Color> &matrix) {
+  unsigned max = 0;
+  for (auto line : matrix)
+    for (auto col : line) {
+      if (col.r > max)
+        max = col.r;
+      if (col.g > max)
+        max = col.g;
+      if (col.b > max)
+        max = col.b;
     }
-
-    return lines;
+  return max;
+}
 }
 
+Matrix<Color> pixmap::readMonochrome(const std::string &filename) {
+  std::ifstream file(filename);
 
+  std::string buf;
+  file >> buf;
+  if (buf != "P1")
+    throw std::runtime_error(
+        "Trying to read PBM file with wrong magic identifier: " + buf);
 
-void pixmap::writeColored(const Matrix<Color> &bitmap, const std::string &filename)
-{
-    auto depth = maxDepth(bitmap);
-    auto height = bitmap.size();
+  auto width = readValue(file);
+  auto height = readValue(file);
 
-    if(height == 0)
-        throw std::logic_error("Trying to write empty bitmap");
+  Matrix<Color> lines;
+  for (std::size_t i = 0; i < height; ++i) {
+    std::vector<Color> line;
+    for (std::size_t i = 0; i < width; ++i) {
+      auto val = readValue(file);
+      if (val == 1)
+        line.push_back(Color(0, 0, 0));
+      else if (val == 0)
+        line.push_back(Color(255, 255, 255));
+      else
+        throw std::runtime_error("Invalid color descriptor: " +
+                                 std::to_string(val));
+    }
+    lines.push_back(line);
+  }
 
-    auto width = bitmap[0].size();
-    for (std::size_t i = 1; i < bitmap.size(); ++i)
-        if(bitmap[i].size() != width)
-            throw std::logic_error("Trying to write nonrectangular bitmap");
+  return lines;
+}
 
-    std::ofstream file(filename);
-    file << "P3" << std::endl
-        << width << std::endl
-        << height << std::endl
-        << depth << std::endl;
+void pixmap::writeColored(const Matrix<Color> &bitmap,
+                          const std::string &filename) {
+  auto depth = maxDepth(bitmap);
+  auto height = bitmap.size();
 
-    for(auto line : bitmap){
-        // counting line length to avoid going over the 70 chars limit
-        std::size_t lineLength = 0;
-        for(auto val : line){
-            std::stringstream valToAdd;
+  if (height == 0)
+    throw std::logic_error("Trying to write empty bitmap");
 
-            valToAdd << static_cast<unsigned>(val.r) << ' '
-                << static_cast<unsigned>(val.g) << ' '
-                << static_cast<unsigned>(val.b) << ' ';
+  auto width = bitmap[0].size();
+  for (std::size_t i = 1; i < bitmap.size(); ++i)
+    if (bitmap[i].size() != width)
+      throw std::logic_error("Trying to write nonrectangular bitmap");
 
-            lineLength += valToAdd.str().size();
-            if(lineLength > 70){
-                file << std::endl;
-                lineLength = valToAdd.str().size();
-            }
+  std::ofstream file(filename);
+  file << "P3" << std::endl
+       << width << std::endl
+       << height << std::endl
+       << depth << std::endl;
 
-            file << valToAdd.str();
-        }
+  for (auto line : bitmap) {
+    // counting line length to avoid going over the 70 chars limit
+    std::size_t lineLength = 0;
+    for (auto val : line) {
+      std::stringstream valToAdd;
+
+      valToAdd << static_cast<unsigned>(val.r) << ' '
+               << static_cast<unsigned>(val.g) << ' '
+               << static_cast<unsigned>(val.b) << ' ';
+
+      lineLength += valToAdd.str().size();
+      if (lineLength > 70) {
         file << std::endl;
+        lineLength = valToAdd.str().size();
+      }
+
+      file << valToAdd.str();
     }
+    file << std::endl;
+  }
 }
 
-Matrix<Color> pixmap::randomMonochrome(const unsigned width, const unsigned height)
-{
-    static std::random_device rd;
-    static std::default_random_engine eng(rd());
-    static std::uniform_int_distribution<unsigned> dis(0, 1);
+Matrix<Color> pixmap::randomMonochrome(const unsigned width,
+                                       const unsigned height) {
+  static std::random_device rd;
+  static std::default_random_engine eng(rd());
+  static std::uniform_int_distribution<unsigned> dis(0, 1);
 
-    Matrix<Color> bitmap;
-    for(std::size_t j = 0; j < height; ++j){
-        std::vector<Color> row;
-        for(std::size_t i = 0; i < width; ++i)
-            row.push_back(dis(eng) ? Color::black : Color::white);
-        bitmap.push_back(row);
-    }
-    return bitmap;
+  Matrix<Color> bitmap;
+  for (std::size_t j = 0; j < height; ++j) {
+    std::vector<Color> row;
+    for (std::size_t i = 0; i < width; ++i)
+      row.push_back(dis(eng) ? Color::black : Color::white);
+    bitmap.push_back(row);
+  }
+  return bitmap;
 }

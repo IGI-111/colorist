@@ -5,13 +5,13 @@
 #include "color.h"
 #include "matrix.h"
 
-namespace pixmap{
-    // PBM format (monochrome)
-    Matrix<Color> readMonochrome(const std::string &filename);
-    Matrix<Color> randomMonochrome(const unsigned width, const unsigned height);
+namespace pixmap {
+// PBM format (monochrome)
+Matrix<Color> readMonochrome(const std::string &filename);
+Matrix<Color> randomMonochrome(const unsigned width, const unsigned height);
 
-    // PPM format (full-color)
-    void writeColored(const Matrix<Color> &bitmap, const std::string &filename);
+// PPM format (full-color)
+void writeColored(const Matrix<Color> &bitmap, const std::string &filename);
 }
 
 #endif /* end of include guard: PIXMAP_H_SPXEH8AS */
